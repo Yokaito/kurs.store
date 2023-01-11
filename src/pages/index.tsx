@@ -6,7 +6,11 @@ import { Inter } from '@next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const { data } = trpc.hello.hello.useQuery()
+  const { data } = trpc.vtex.product.useQuery({
+    productId: '115498942',
+  })
+
+  console.info(data)
 
   return (
     <>
@@ -17,7 +21,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={inter.className}>
-        <h1 className="text-6xl font-bold">{data?.message}</h1>
+        <h1 className="text-6xl font-bold">Teste</h1>
       </main>
     </>
   )

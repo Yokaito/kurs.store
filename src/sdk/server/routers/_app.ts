@@ -1,8 +1,9 @@
 import { router } from '../trpc'
-import { helloRouter } from './hello'
+
+import { vtex } from './vtex'
 
 export const appRouter = router({
-  hello: helloRouter,
+  vtex: vtex,
 })
 
 export type AppRouter = typeof appRouter
