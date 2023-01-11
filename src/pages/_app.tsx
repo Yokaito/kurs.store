@@ -1,4 +1,4 @@
-import ErrorBoundary from '@/sdk/Error/ErrorBoundary'
+import ErrorBoundary from '@/sdk/error/ErrorBoundary'
 import GlobalStyle from '@/styles/resets/createGlobalStyles'
 import theme from '@/styles/theme/theme'
 import { trpc } from '@/sdk/lib/trpc'
