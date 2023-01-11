@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = {
   processors: ['stylelint-processor-styled-components'],
   extends: [
