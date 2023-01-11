@@ -1,10 +1,13 @@
 import Head from 'next/head'
+import { trpc } from '@/sdk/lib/trpc'
 
 import { Inter } from '@next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const { data } = trpc.hello.hello.useQuery()
+
   return (
     <>
       <Head>
@@ -14,7 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={inter.className}>
-        <h1 className="text-6xl font-bold">Hello World</h1>
+        <h1 className="text-6xl font-bold">{data?.message}</h1>
       </main>
     </>
   )
