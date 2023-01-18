@@ -10,8 +10,6 @@ export default function Home() {
     productId: '115498942',
   })
 
-  console.info(data)
-
   return (
     <>
       <Head>
