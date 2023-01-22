@@ -15,7 +15,9 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/platforms/*": ["./src/sdk/server/platforms/*"],
+      "@/server/*": ["./src/sdk/server/*"]
     },
     "incremental": true
   },

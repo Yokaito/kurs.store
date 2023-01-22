@@ -6,9 +6,9 @@ import { Inter } from '@next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const { data } = trpc.vtex.product.useQuery({
-    productId: '115498942',
-  })
+  const { data } = trpc.vtex.search.useQuery()
+
+  console.log(data)
 
   return (
     <>

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   optimizeFonts: true,
   experimental: {
     adjustFontFallbacks: true,
@@ -8,9 +8,9 @@ const nextConfig = {
   compiler: {
     styledComponents: {
       displayName: true,
-      namespace: "kurs",
+      namespace: 'kurs',
     },
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

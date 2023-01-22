@@ -1,9 +1,9 @@
-import { router } from '../trpc'
+import { router, mergeRouters } from '../trpc'
 
-import { vtex } from './vtex'
+import { IntelligentSearch } from './vtex/search'
 
 export const appRouter = router({
-  vtex: vtex,
+  vtex: mergeRouters(IntelligentSearch),
 })
 
 export type AppRouter = typeof appRouter
