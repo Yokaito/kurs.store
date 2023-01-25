@@ -18,12 +18,10 @@ export const createContext = async (
 
   const commerce = VtexCommerce({
     baseURl: vtexBaseUrl,
-    hideUnavailableItems,
   })
 
   const search = IntelligentSearch({
     baseURl: vtexBaseUrl,
-    hideUnavailableItems,
   })
 
   return {
@@ -37,8 +35,9 @@ export const createContext = async (
     },
     vtex: {
       baseUrl: vtexBaseUrl,
-      channel: {
-        seller: '1',
+      storeOptions: {
+        hideUnavailableItems,
+        locale: 'pt-BR',
         regionId: '',
         salesChannel: '1',
       },

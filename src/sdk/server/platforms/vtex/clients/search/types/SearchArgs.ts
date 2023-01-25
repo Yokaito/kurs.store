@@ -1,18 +1,32 @@
-import { Sort } from './sort'
-import { SelectedFacet } from '@/platforms/utils'
-import { StoreOptions } from '@/platforms/vtex/types'
+import { SortSchema } from './sort'
+import { SelectedFacetSchema } from '@/platforms/utils'
 
-export interface SearchArgs {
-  query?: string
-  page: number
-  count: number
-  type: 'product_search' | 'facets'
-  sort?: Sort
-  selectedFacets?: SelectedFacet[]
-  fuzzy?: '0' | '1' | 'auto'
-  hideUnavailableItems?: boolean
-  locale?: string
-  storeOptions: StoreOptions
-}
+import { z } from 'zod'
 
-export type SearchStoreOptions = StoreOptions
+const fuzzySchema = z.union([z.literal('0'), z.literal('1'), z.literal('auto')])
+const typeSchema = z.union([z.literal('product_search'), z.literal('facets')])
+
+export const SearchSchema = z.object({
+  query: z.string().optional(),
+  page: z.number().min(1),
+  count: z.number().min(1),
+  type: typeSchema,
+  sort: SortSchema.optional(),
+  selectedFacets: SelectedFacetSchema.array().optional(),
+  fuzzy: fuzzySchema.optional(),
+  storeOptions: z.object({
+    locale: z.string(),
+    salesChannel: z.string(),
+    regionId: z.string(),
+    hideUnavailableItems: z.string().optional(),
+  }),
+})
+
+export const SearchSchemaRouter = SearchSchema.omit({
+  type: true,
+}).extend({
+  storeOptions: SearchSchema.shape.storeOptions.optional(),
+})
+
+export type SearchPlatformProps = z.infer<typeof SearchSchema>
+export type SearchRouterProps = z.infer<typeof SearchSchemaRouter>

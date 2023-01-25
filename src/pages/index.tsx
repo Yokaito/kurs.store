@@ -2,13 +2,32 @@ import Head from 'next/head'
 import { trpc } from '@/sdk/lib/trpc'
 
 import { Inter } from '@next/font/google'
+import { Suspense, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
-  const { data } = trpc.vtex.search.useQuery()
+const storeOptions = {
+  salesChannel: '3',
+  locale: 'en-GB',
+  regionId: '',
+  hideUnavailableItems: 'false',
+}
 
-  console.log(data)
+const storeOptionsBr = {
+  salesChannel: '1',
+  locale: 'pt-BR',
+  regionId: '',
+  hideUnavailableItems: 'false',
+}
+
+export default function Home() {
+  const [options, setOptions] = useState(storeOptions)
+  const { data } = trpc.vtex.search.useQuery({
+    query: 'shirt',
+    count: 10,
+    page: 1,
+    storeOptions: options,
+  })
 
   return (
     <>
@@ -20,6 +39,31 @@ export default function Home() {
       </Head>
       <main className={inter.className}>
         <h1 className="text-6xl font-bold">Teste</h1>
+        <div>
+          <div>Sales Channel {options.salesChannel}</div>
+          <div>Locale {options.locale}</div>
+        </div>
+        <div>
+          <button
+            onClick={() => setOptions(storeOptions)}
+            className="bg-blue-500 text-white p-2 rounded"
+          >
+            English
+          </button>
+          <button
+            onClick={() => setOptions(storeOptionsBr)}
+            className="bg-blue-500 text-white p-2 rounded"
+          >
+            Português
+          </button>
+        </div>
+        <div>
+          <Suspense fallback="Loading...">
+            <ul>
+              {data && data.products.map((item) => <li>{item.productId}</li>)}
+            </ul>
+          </Suspense>
+        </div>
       </main>
     </>
   )

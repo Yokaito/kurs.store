@@ -7,55 +7,24 @@ const POLICY_KEY = 'trade-policy'
 const REGION_KEY = 'region-id'
 const CHANNEL_KEYS = new Set([POLICY_KEY, REGION_KEY])
 
-export const IntelligentSearch = ({
-  baseURl,
-  hideUnavailableItems,
-}: Options) => {
+export const IntelligentSearch = ({ baseURl }: Options) => {
   const baseIO = `${baseURl}/api/io`
-
-  const getPolicyFacet = (salesChannel: string): SelectedFacet | null => {
-    if (!salesChannel) {
-      return null
-    }
-
-    return {
-      key: POLICY_KEY,
-      value: salesChannel,
-    }
-  }
-
-  const getRegionFacet = (
-    regionId: string,
-    seller: string
-  ): SelectedFacet | null => {
-    const sellerRegionId = seller
-      ? Buffer.from(`SW#${seller}`).toString('base64')
-      : null
-    const facet = sellerRegionId ?? regionId
-
-    if (!facet) {
-      return null
-    }
-
-    return {
-      key: REGION_KEY,
-      value: facet,
-    }
-  }
 
   const addDefaultFacets = (
     facets: SelectedFacet[],
-    { salesChannel, regionId, seller }: T.SearchStoreOptions
+    { salesChannel, regionId }: { salesChannel: string; regionId: string }
   ) => {
     const withDefaultFacets = facets.filter(({ key }) => !CHANNEL_KEYS.has(key))
 
-    const policyFacet =
-      facets.find(({ key }) => key === POLICY_KEY) ??
-      getPolicyFacet(salesChannel)
+    const policyFacet = facets.find(({ key }) => key === POLICY_KEY) ?? {
+      key: POLICY_KEY,
+      value: salesChannel,
+    }
 
-    const regionFacet =
-      facets.find(({ key }) => key === REGION_KEY) ??
-      getRegionFacet(regionId, seller)
+    const regionFacet = facets.find(({ key }) => key === REGION_KEY) ?? {
+      key: REGION_KEY,
+      value: regionId,
+    }
 
     if (policyFacet !== null) {
       withDefaultFacets.push(policyFacet)
@@ -76,12 +45,11 @@ export const IntelligentSearch = ({
     selectedFacets = [],
     type,
     fuzzy = 'auto',
-    locale = '',
-    storeOptions,
-  }: T.SearchArgs): Promise<T> => {
+    storeOptions: { locale, salesChannel, regionId, hideUnavailableItems },
+  }: T.SearchPlatformProps): Promise<T> => {
     const params = new URLSearchParams({
-      page: page.toString(),
-      count: count.toString(),
+      page: page?.toString() ?? '1',
+      count: count?.toString() ?? '10',
       query,
       sort,
       fuzzy,
@@ -95,7 +63,10 @@ export const IntelligentSearch = ({
       params.append('hideUnavailableItems', hideUnavailableItems)
     }
 
-    const pathname = addDefaultFacets(selectedFacets, storeOptions)
+    const pathname = addDefaultFacets(selectedFacets, {
+      salesChannel,
+      regionId,
+    })
       .map(({ key, value }) => `${key}/${value}`)
       .join('/')
 
@@ -104,7 +75,7 @@ export const IntelligentSearch = ({
     )
   }
 
-  const products = (args: Omit<T.SearchArgs, 'type'>) =>
+  const products = (args: Omit<T.SearchPlatformProps, 'type'>) =>
     search<T.ProductSearchResult>({ ...args, type: 'product_search' })
 
   return {
