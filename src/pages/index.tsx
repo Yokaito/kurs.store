@@ -22,12 +22,22 @@ const storeOptionsBr = {
 
 export default function Home() {
   const [options, setOptions] = useState(storeOptions)
-  const { data } = trpc.vtex.search.useQuery({
-    query: 'shirt',
-    count: 10,
-    page: 1,
-    storeOptions: options,
-  })
+  const [value, setValue] = useState('')
+  const { data } = trpc.vtex.search.useQuery(
+    {
+      query: value,
+      count: 20,
+      page: 1,
+      storeOptions: options,
+    },
+    {
+      enabled: !!value,
+    }
+  )
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value)
+  }
 
   return (
     <>
@@ -58,9 +68,23 @@ export default function Home() {
           </button>
         </div>
         <div>
+          <input
+            style={{ border: '1px solid red' }}
+            placeholder="Search for products"
+            type="text"
+            value={value}
+            onChange={handleSearch}
+          />
+        </div>
+        <div>
           <Suspense fallback="Loading...">
             <ul>
-              {data && data.products.map((item) => <li>{item.productId}</li>)}
+              {data &&
+                data.products.map((item) => (
+                  <li key={item.productId}>
+                    {item.name} - {item.productId}
+                  </li>
+                ))}
             </ul>
           </Suspense>
         </div>

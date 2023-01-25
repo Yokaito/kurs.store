@@ -28,5 +28,18 @@ export const SearchSchemaRouter = SearchSchema.omit({
   storeOptions: SearchSchema.shape.storeOptions.optional(),
 })
 
+export const SearchSchemaForUniqueProduct = SearchSchema.omit({
+  query: true,
+  page: true,
+  count: true,
+  type: true,
+  sort: true,
+  selectedFacets: true,
+  fuzzy: true,
+}).extend({
+  id: z.string(),
+  storeOptions: SearchSchema.shape.storeOptions.optional(),
+})
+
 export type SearchPlatformProps = z.infer<typeof SearchSchema>
 export type SearchRouterProps = z.infer<typeof SearchSchemaRouter>
