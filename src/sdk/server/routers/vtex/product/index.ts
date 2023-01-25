@@ -1,10 +1,11 @@
-import { router, routerChangeContext } from '@/sdk/server/trpc'
+import { router } from '@/server/trpc'
+import { mutateContextProcedure } from '@/server/middlewares'
 
 import { SearchSchemaForUniqueProduct } from '@/platforms/vtex/clients/search/types'
 import { TRPCError } from '@trpc/server'
 
 export const Product = router({
-  product: routerChangeContext
+  product: mutateContextProcedure
     .input(SearchSchemaForUniqueProduct)
     .query(async ({ ctx, input }) => {
       const {

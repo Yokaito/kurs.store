@@ -1,9 +1,10 @@
-import { router, routerChangeContext } from '@/sdk/server/trpc'
+import { router } from '@/server/trpc'
+import { mutateContextProcedure } from '@/server/middlewares'
 
 import { SearchSchemaRouter } from '@/platforms/vtex/clients/search/types'
 
 export const IntelligentSearch = router({
-  search: routerChangeContext
+  search: mutateContextProcedure
     .input(SearchSchemaRouter)
     .query(async ({ ctx, input }) => {
       const {
