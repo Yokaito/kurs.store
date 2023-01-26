@@ -23,6 +23,8 @@ const storeOptionsBr = {
 export default function Home() {
   const [options, setOptions] = useState(storeOptions)
   const [value, setValue] = useState('')
+  const utils = trpc.useContext()
+
   const { data } = trpc.vtex.search.useQuery(
     {
       query: value,
@@ -39,6 +41,10 @@ export default function Home() {
     setValue(e.target.value)
   }
 
+  const invalidateQuery = () => {
+    utils.vtex.search.invalidate()
+  }
+
   return (
     <>
       <Head>
@@ -48,7 +54,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={inter.className}>
-        <h1 className="text-6xl font-bold">Teste</h1>
+        <div>
+          <button onClick={invalidateQuery}>Invalidate</button>
+        </div>
         <div>
           <div>Sales Channel {options.salesChannel}</div>
           <div>Locale {options.locale}</div>
