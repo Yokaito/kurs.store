@@ -1,7 +1,5 @@
 const pages = {
   home: '/',
-  pdp: '/camiseta-flash/p',
-  collection: '/Apps',
 }
 
 module.exports = {
