@@ -9,7 +9,7 @@ module.exports = {
     collect: {
       numberOfRuns: 3,
       url: Object.values(pages).map((page) => `http://localhost:3000${page}`),
-      startServerCommand: 'yarn serve',
+      startServerCommand: 'yarn start',
     },
     upload: {
       target: 'temporary-public-storage',
