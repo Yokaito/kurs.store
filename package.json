@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "lhci": "lhci autorun",
     "lint-staged": "lint-staged",
     "postinstall": "husky install",
     "commit": "cz"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
+    "@lhci/cli": "^0.12.0",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
